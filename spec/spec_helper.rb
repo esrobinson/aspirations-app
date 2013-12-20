@@ -66,3 +66,7 @@ end
 def add_astronaut_goal
   add_goal("Be an astronaut")
 end
+
+def god
+  User.find_by_username("god")
+end

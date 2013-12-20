@@ -51,7 +51,7 @@ describe "logging in" do
     sign_up_as_god
     click_button "Sign Out"
     sign_in("god")
-    expect(current_path).to eq(user_path(current_user))
+    expect(current_path).to eq(user_path(god))
   end
 
   it "has a sign in page" do

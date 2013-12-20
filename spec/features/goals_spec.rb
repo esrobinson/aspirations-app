@@ -43,7 +43,7 @@ describe "goal editing" do
   end
 
   it "has an edit page" do
-    goal = current_user.goals.first
+    goal = god.goals.first
     visit edit_goal_url(goal)
     expect(page).to have_content("Edit Goal")
     expect(page).to have_content("Goal Name")
@@ -51,35 +51,37 @@ describe "goal editing" do
   end
 
   it "populate goal name" do
-    goal = current_user.goals.first
+    goal = god.goals.first
     visit edit_goal_url(goal)
     expect(find_field("Goal Name").value).to eq(goal.name)
   end
 
   it "shouldn't have private box checked for public goal" do
-    goal = current_user.goals.where(:private => false).first
+    goal = god.goals.where(:private => false).first
     visit edit_goal_url(goal)
     expect(find_field("Private?")).not_to be_checked
   end
 
   it "should have private box checked for private goal" do
-    goal = current_user.goals.where(:private => true).first
+    goal = god.goals.where(:private => true).first
     visit edit_goal_url(goal)
     expect(find_field("Private?")).to be_checked
   end
 
   it "can only be done by the owner" do
-    goal = current_user.goal.first
+    goal = god.goal.first
     click_button "Sign Out"
     sign_up("Bob")
     visit edit_goal_url(goal)
-    expect(page).to have_content("You can't edit someone elses goal")
+    expect(page).to have_content(
+      "You must be the owner of this goal to do that."
+    )
     expect(page).not_to have_content("Edit Goal")
   end
 
 
   it "displays the new name after editing" do
-    goal = current_user.goals.first
+    goal = god.goals.first
     visit edit_goal_url(goal)
     fill_in "Goal Name", :with => "Be a scuba diver"
     click_button "Edit Goal"
@@ -100,7 +102,7 @@ describe "goal deletion" do
   end
 
   it "can only be done by the owner" do
-    goal = current_user.goal.first
+    goal = god.goal.first
     click_button "Sign Out"
     visit goal_url(goal)
     expect(page).not_to have_button "Give Up"
@@ -114,7 +116,7 @@ describe "goal deletion" do
   it "should redirect to user's goal list" do
     click_button "Give Up"
     expect(page).to have_content "Goal List"
-    expect(current_path).to eq(user_path(current_user))
+    expect(current_path).to eq(user_path(god))
   end
 
 end
@@ -127,7 +129,7 @@ describe "goal list" do
     add_goal("Mortality", true)
     add_goal("Learn to wrap")
     add_goal("Rapture", true)
-    visit user_url(current_user)
+    visit user_url(god)
   end
 
 
@@ -149,19 +151,19 @@ describe "goal list" do
   end
 
   it "doesn't show private goals to other users" do
-    god = current_user
+    path = current_path
     click_button "Sign Out"
     sign_up("Bob")
-    visit user_url(god)
+    visit path
     expect(page).not_to have_content("Mortality")
     expect(page).not_to have_content("Rapture")
   end
 
   it "shows public goals to other users" do
-    god = current_user
+    path = current_path
     click_button "Sign Out"
     sign_up("Bob")
-    visit user_url(god)
+    visit path
     expect(page).to have_content("Be an astronaut")
     expect(page).to have_content("Learn to wrap")
   end
