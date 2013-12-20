@@ -8,7 +8,20 @@
 </head>
 <body>
 
-<%= yield %>
+  <% flash[:messages].try(:each) do |message| %>
+    <%= message %>
+  <% end %>
+
+  <% if logged_in? %>
+    Hi, <%= current_user.username %>.
+    <%= button_to "Sign Out", session_url, :method => :delete %>
+  <% else %>
+    <%= link_to "Sign In", new_session_url %>
+    or
+    <%= link_to "Sign Up", new_user_url %>
+  <% end %>
+
+  <%= yield %>
 
 </body>
 </html>
