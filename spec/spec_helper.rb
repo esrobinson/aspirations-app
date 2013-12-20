@@ -55,3 +55,14 @@ def sign_in(username)
   fill_in "Password", :with => "password"
   click_button "Sign In"
 end
+
+def add_goal(goal, private = false)
+  visit new_goal_url
+  fill_in "Goal Name", :with => goal
+  check "Private?" if private
+  click_button "Add Goal"
+end
+
+def add_astronaut_goal
+  add_goal("Be an astronaut")
+end

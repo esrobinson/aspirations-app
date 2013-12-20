@@ -47,10 +47,12 @@ end
 
 describe "logging in" do
 
-  # it "redirects to the user's show page on login" do
-  #   sign_in("god")
-  #   expect(current_path).to eq(user_path(current_user))
-  # end
+  it "redirects to the user's show page on login" do
+    sign_up_as_god
+    click_button "Sign Out"
+    sign_in("god")
+    expect(current_path).to eq(user_path(current_user))
+  end
 
   it "has a sign in page" do
     visit new_session_url
