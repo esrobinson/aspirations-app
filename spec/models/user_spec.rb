@@ -8,6 +8,7 @@ describe User do
   it { should_not allow_mass_assignment_of(:password_digest) }
   it { should_not allow_mass_assignment_of(:session_token) }
   it { should ensure_length_of(:password).is_at_least(6) }
+  it { should have_many(:goals) }
 
   it "does not allow duplicate usernames" do
     u.save!

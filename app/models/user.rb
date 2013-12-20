@@ -13,6 +13,8 @@ class User < ActiveRecord::Base
     :on => :create
   )
 
+  has_many :goals
+
   def self.find_by_credentials(params)
     user = User.find_by_username(params[:username])
     return user if user && user.is_password?(params[:password])
