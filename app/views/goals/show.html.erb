@@ -1,0 +1,8 @@
+<%= @goal.name %>
+
+<%= "Completed" if @goal.completed? %>
+
+<% if @goal.user == current_user %>
+  <%= link_to "Edit Goal", edit_goal_url(@goal) %>
+  <%= button_to "Give Up", goal_url(@goal), :method => :delete %>
+<% end %>

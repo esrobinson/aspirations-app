@@ -4,7 +4,11 @@ class GoalsController < ApplicationController
 
   def show
     @goal = Goal.find(params[:id])
-    render :show
+    if @goal.private?
+      require_owner
+    else
+      render :show
+    end
   end
 
   def new
@@ -43,16 +47,16 @@ class GoalsController < ApplicationController
     redirect_to user_url(current_user)
   end
 
-  private
   def is_owner?
     @goal = Goal.find(params[:id])
     @goal.user == current_user
   end
 
+  private
   def require_owner
     unless is_owner?
       flash[:messages] = ["You must be the owner of this goal to do that."]
-      redirect_to goal_url(@goal)
+      redirect_to user_url(current_user)
     end
   end
 end

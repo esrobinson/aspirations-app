@@ -1,1 +1,11 @@
 Hi, user.
+
+Goal List
+
+<ul>
+  <% @goals.each do |goal| %>
+    <li><%= link_to goal.name, goal_url(goal) %>
+    <%= "Completed" if goal.completed? %>
+    </li>
+  <% end %>
+</ul>

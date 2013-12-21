@@ -1,5 +1,11 @@
 class UsersController < ApplicationController
 
+  def show
+    @user = User.find(params[:id])
+    @goals = @user.goals
+    @goals.reject! { |goal| goal.private? } if @user != current_user
+  end
+
   def new
     @user = User.new
     render :new

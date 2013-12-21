@@ -69,7 +69,7 @@ describe "goal editing" do
   end
 
   it "can only be done by the owner" do
-    goal = god.goal.first
+    goal = god.goals.first
     click_button "Sign Out"
     sign_up("Bob")
     visit edit_goal_url(goal)
@@ -102,7 +102,7 @@ describe "goal deletion" do
   end
 
   it "can only be done by the owner" do
-    goal = god.goal.first
+    goal = god.goals.first
     click_button "Sign Out"
     visit goal_url(goal)
     expect(page).not_to have_button "Give Up"
@@ -168,4 +168,32 @@ describe "goal list" do
     expect(page).to have_content("Learn to wrap")
   end
 
+  it "shows completed goals" do
+    click_link "Learn to wrap"
+    click_link "Edit Goal"
+    check "Completed?"
+    click_button "Edit Goal"
+    expect(page).to have_content("Completed")
+  end
+
+  it "doesn't falsely claim completion" do
+    expect(page).not_to have_content("Completed")
+  end
+
+end
+
+describe "goal show page" do
+
+  before(:each) do
+    sign_up_as_god
+    add_goal("Mortality", true)
+  end
+
+  it "does not let non-owners see private goals" do
+    click_button "Sign Out"
+    sign_up("Bob")
+    visit goal_url(god.goals.first)
+    expect(page)
+      .to have_content("You must be the owner of this goal to do that.")
+  end
 end

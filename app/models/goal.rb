@@ -4,4 +4,13 @@ class Goal < ActiveRecord::Base
   validates :name, :user, :presence => true
 
   belongs_to :user
+
+  def private?
+    self.private
+  end
+
+  def completed?
+    self.completed
+  end
+
 end
