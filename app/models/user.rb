@@ -14,6 +14,8 @@ class User < ActiveRecord::Base
   )
 
   has_many :goals
+  has_many :cheers
+  has_many :cheered_goals, :through => :cheers, :source => :goal
 
   def self.find_by_credentials(params)
     user = User.find_by_username(params[:username])

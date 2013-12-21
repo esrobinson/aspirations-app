@@ -9,6 +9,8 @@ describe User do
   it { should_not allow_mass_assignment_of(:session_token) }
   it { should ensure_length_of(:password).is_at_least(6) }
   it { should have_many(:goals) }
+  it { should have_many(:cheers) }
+  it { should have_many(:cheered_goals) }
 
   it "does not allow duplicate usernames" do
     u.save!
