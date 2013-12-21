@@ -6,3 +6,13 @@
   <%= link_to "Edit Goal", edit_goal_url(@goal) %>
   <%= button_to "Give Up", goal_url(@goal), :method => :delete %>
 <% end %>
+
+<%= @cheers.count %> cheer(s)
+
+<% @cheers.each do |cheer| %>
+  <%= cheer.user.username %> cheered this!
+<% end %>
+
+<% if current_user.cheers.count <= 5 && !current_user.cheered_goals.include?(@goal) %>
+  <%= button_to "Cheer", goal_cheers_url(@goal), :method => :post %>
+<% end %>

@@ -13,12 +13,12 @@ class CheersController < ApplicationController
   private
   def can_cheer?
     @goal = Goal.find(params[:goal_id])
-    cheer_count = current_user.cheer.count
+    cheer_count = current_user.cheers.count
     unless cheer_count < 5
       flash[:messages] = ["You have run out of cheers."]
       redirect_to goal_url(@goal)
     end
-    if user.cheered_goals.include?(@goal)
+    if current_user.cheered_goals.include?(@goal)
       redirect_to goal_url(@goal)
     end
   end

@@ -4,9 +4,11 @@ class GoalsController < ApplicationController
 
   def show
     @goal = Goal.find(params[:id])
+    @cheers = @goal.cheers.includes(:user)
     if @goal.private?
       require_owner
     else
+
       render :show
     end
   end
